@@ -29,4 +29,6 @@ typedef signed short sword;
 typedef signed int sdword;
 typedef signed long long sqword;
 
+typedef enum { FALSE = 0, TRUE } bool;
+
 #endif
