@@ -16,27 +16,17 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "types.h"
-#include "gdt.h"
-#include "cpuid.h"
+#ifndef _TYPES_H_
+#define _TYPES_H_
 
-void loader()
-{
-	gdt_set_entry(0, 0, 0, 0, 0);
-	gdt_set_entry(1, 0, GDT_LIMIT, GDT_PRESENT | GDT_RING_0 | GDT_SEGMENT | GDT_EXECUTABLE | GDT_READABLE, GDT_GRANULAR | GDT_PROTECTED_MODE);
-	gdt_set_entry(2, 0, GDT_LIMIT, GDT_PRESENT | GDT_RING_0 | GDT_SEGMENT | GDT_WRITABLE | GDT_DIRECTION_UP, GDT_GRANULAR | GDT_PROTECTED_MODE);
-	gdt_set_entry(3, 0, GDT_LIMIT, GDT_PRESENT | GDT_RING_0 | GDT_SEGMENT | GDT_EXECUTABLE | GDT_READABLE, GDT_GRANULAR | GDT_LONG_MODE);
-	
-	gdt_load();
+typedef unsigned char byte;
+typedef unsigned short word;
+typedef unsigned int dword;
+typedef unsigned long qword;
 
-	gdt_flush_registers(0x08, 0x10, 0x10, 0x00, 0x00, 0x10);
+typedef signed char sbyte;
+typedef signed short sword;
+typedef signed int sdword;
+typedef signed long long sqword;
 
-	
-
-	//check_cpuid();
-	//check_lm();
-	//enable_pae_and_pge();
-	//setup_paging();
-	//enable_long_mode();
-	//jmp();
-}
+#endif

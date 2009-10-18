@@ -44,11 +44,11 @@ bin/kernel: $(OBJS_KERNEL)
 
 obj/loader/%.o: $(addprefix src/loader/,$(notdir %.c))
 	@echo " [CC 32] $^"
-	@$(CC) $(CCFLAGS) $(M32) -o $@ $^
+	@$(CC) $(CCFLAGS) $(M32) -Isrc/loader/include -o $@ $^
 
 obj/kernel/%.o: $(addprefix src/kernel/,$(notdir %.c))
 	@echo " [CC 64] $^"
-	@$(CC) $(CCFLAGS) $(M64) -o $@ $^
+	@$(CC) $(CCFLAGS) $(M64) -Isrc/kernel/include -o $@ $^
 
 obj/loader/%.o: $(addprefix src/loader/,$(notdir %.S))
 	@echo " [AS 32] $^"
