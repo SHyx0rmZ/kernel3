@@ -62,4 +62,28 @@ clean:
 	@echo " [RM] $(OBJS_LOADER) $(OBJS_KERNEL)"
 	@rm $(OBJS_LOADER) $(OBJS_KERNEL)
 
-.PHONY: clean
+image: bin/nuke.nke
+	@echo " [FD] You will have to enter you sudo password!"
+	@echo " [FD] Creating filesystem"
+	@dd if=/dev/zero of=bin/nuke.img bs=512 count=2880 2> /dev/null
+	@sudo mke2fs -F bin/nuke.img > /dev/null 2> /dev/null
+	@echo " [FD] Mounting filesystem"
+	@mkdir bin/image
+	@sudo mount -oloop bin/nuke.img bin/image
+	@sudo chown $(USERNAME) bin/image
+	@mkdir -p bin/image/boot/grub
+	@echo " [FD] Copying prerequisites"
+	@touch bin/image/boot/grub/menu.lst
+	@echo -e "default 0\ntimeout 1\n\ntitle ASXSoft Nuke, kernel3\nroot (fd0)\nkernel /boot/nuke.nke\nboot" > bin/image/boot/grub/menu.lst
+	@cp /boot/grub/stage* bin/image/boot/grub
+	@echo " [FD] Copying kernel"
+	@cp bin/nuke.nke bin/image/boot
+	@echo " [FD] Unmounting filesystem"
+	@sudo umount bin/image
+	@rm -r bin/image
+	@echo " [FD] Installing GRUB"
+	@sudo echo -e "device (fd0) bin/nuke.img\nroot (fd0)\nsetup (fd0)\nquit" | grub --batch --no-floppy > /dev/null 2> /dev/null
+	@echo " [FD] Image created"
+
+
+.PHONY: clean image
