@@ -19,6 +19,8 @@
 #include "types.h"
 #include "gdt.h"
 #include "cpuid.h"
+#include "print.h"
+#include "reboot.h"
 
 void loader()
 {
@@ -37,16 +39,16 @@ void loader()
 	
 	if((cpuid->edx & 0x20000000) == NULL)
 	{
-		// TODO: die("Your CPU does not support LM!")
-		while(1) {};
+		print("Your CPU does not support Long Mode", COLOR_RED);
+		reboot();
 	}
 
 	cpuid = cpuid_standard(0x00000001);
 
 	if((cpuid->edx & 0x40) == NULL)
 	{
-		// TODO: die("Your CPU doe not support PAE!")
-		while(1) {};
+		print("Your CPU doe not support Physical Adress Extension", COLOR_RED);
+		reboot();
 	}
 
 	//check_cpuid();

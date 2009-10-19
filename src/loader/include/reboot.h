@@ -16,28 +16,13 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PRINT_H_
-#define _PRINT_H_
-
-#include "types.h"
-
-/*
- * Variables
- */
-
-#define COLOR_GRAY 7
-#define COLOR_DARKGRAY 8
-#define COLOR_BLUE 9
-#define COLOR_GREEN 10
-#define COLOR_RED 12
-#define COLOR_YELLOW 14
-#define COLOR_WHITE 15
+#ifndef _REBOOT_H_
+#define _REBOOT_H_
 
 /*
  * Functions
  */
 
-void clear_screen();
-void print(const char *text, byte flags);
+void reboot();
 
 #endif

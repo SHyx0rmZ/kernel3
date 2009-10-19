@@ -33,7 +33,7 @@ void clear_screen()
 	videomemory = (byte *)0xB8000;
 }
 
-void print(const byte *text, byte flags)
+void print(const char *text, byte flags)
 {
 	byte *c;
 
