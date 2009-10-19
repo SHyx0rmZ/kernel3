@@ -31,7 +31,23 @@ void loader()
 
 	gdt_flush_registers(0x08, 0x10, 0x10, 0x00, 0x00, 0x10);
 
+	cpuid_result_t *cpuid;
+
+	cpuid = cpuid_extended(0x80000001);
 	
+	if((cpuid->edx & 0x20000000) == NULL)
+	{
+		// TODO: die("Your CPU does not support LM!")
+		while(1) {};
+	}
+
+	cpuid = cpuid_standard(0x00000001);
+
+	if((cpuid->edx & 0x40) == NULL)
+	{
+		// TODO: die("Your CPU doe not support PAE!")
+		while(1) {};
+	}
 
 	//check_cpuid();
 	//check_lm();
