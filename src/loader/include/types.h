@@ -31,4 +31,6 @@ typedef signed long long sqword;
 
 typedef enum { FALSE = 0, TRUE } bool;
 
+#define NULL 0
+
 #endif
