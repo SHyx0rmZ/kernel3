@@ -55,4 +55,8 @@ void loader()
 	//setup_paging();
 	//enable_long_mode();
 	//jmp();
+	
+	asm(
+		"push $0x18 \n"
+	   );
 }
