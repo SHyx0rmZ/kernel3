@@ -69,7 +69,7 @@ cpuid_result_t *cpuid_extended(dword function)
 
 cpuid_result_t *cpuid(dword function)
 {
-	cpuid_result_t *result;
+	cpuid_result_t *result = (cpuid_result_t *)NULL;
 	
 	if(function != 0x00000000 && function != 0x80000000)
 	{
@@ -84,14 +84,14 @@ cpuid_result_t *cpuid(dword function)
 		{
 			if(function > standard)
 			{
-				return NULL;
+				return result;
 			}
 		}
 		else
 		{
 			if(function > extended)
 			{
-				return NULL;
+				return result;
 			}
 		}
 	}
