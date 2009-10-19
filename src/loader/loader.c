@@ -24,6 +24,8 @@
 
 void loader()
 {
+	clear_screen();
+
 	gdt_set_entry(0, 0, 0, 0, 0);
 	gdt_set_entry(1, 0, GDT_LIMIT, GDT_PRESENT | GDT_RING_0 | GDT_SEGMENT | GDT_EXECUTABLE | GDT_READABLE, GDT_GRANULAR | GDT_PROTECTED_MODE);
 	gdt_set_entry(2, 0, GDT_LIMIT, GDT_PRESENT | GDT_RING_0 | GDT_SEGMENT | GDT_WRITABLE | GDT_DIRECTION_UP, GDT_GRANULAR | GDT_PROTECTED_MODE);
@@ -51,13 +53,14 @@ void loader()
 		reboot();
 	}
 
-	//check_cpuid();
-	//check_lm();
 	//enable_pae_and_pge();
 	//setup_paging();
 	//enable_long_mode();
 	//jmp();
 	
+	//TODO: Remove this
+	while(TRUE) { asm("hlt"); }
+
 	asm(
 		"push $0x18 \n"
 	   );
