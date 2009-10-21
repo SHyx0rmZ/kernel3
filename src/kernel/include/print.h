@@ -16,17 +16,28 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _PRINT_H_
+#define _PRINT_H_
+
 #include "types.h"
-#include "print.h"
 
-void kernel(int magic, int multiboot)
-{
-	if(multiboot)
-		multiboot = 0;
-	if(magic)
-		magic = 0;
+/*
+ * Variables
+ */
 
-	print("Booted into Long Mode, horray!", COLOR_GREEN);
+#define COLOR_GRAY 7
+#define COLOR_DARKGRAY 8
+#define COLOR_BLUE 9
+#define COLOR_GREEN 10
+#define COLOR_RED 12
+#define COLOR_YELLOW 14
+#define COLOR_WHITE 15
 
-	while(1) { asm("hlt"); };
-}
+/*
+ * Functions
+ */
+
+void clear_screen();
+void print(const char *text, byte flags);
+
+#endif

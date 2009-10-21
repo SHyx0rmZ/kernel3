@@ -16,17 +16,21 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "types.h"
-#include "print.h"
+#ifndef _TYPES_H_
+#define _TYPES_H_
 
-void kernel(int magic, int multiboot)
-{
-	if(multiboot)
-		multiboot = 0;
-	if(magic)
-		magic = 0;
+typedef unsigned char byte;
+typedef unsigned short word;
+typedef unsigned int dword;
+typedef unsigned long long qword;
 
-	print("Booted into Long Mode, horray!", COLOR_GREEN);
+typedef signed char sbyte;
+typedef signed short sword;
+typedef signed int sdword;
+typedef signed long long sqword;
 
-	while(1) { asm("hlt"); };
-}
+typedef enum { FALSE = 0, TRUE } bool;
+
+#define NULL 0
+
+#endif

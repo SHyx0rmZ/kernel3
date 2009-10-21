@@ -29,9 +29,16 @@ jmp NUKE_LOADER_EXIT
 
 NUKE_LOADER_START_STACK:
 
-times 64 db 00
+times 256 db 00
 
 NUKE_LOADER_END_STACK:
 
 section .module_exit
 NUKE_LOADER_EXIT:
+pop ebx
+pop eax
+push 0x00000000
+push eax
+push 0x00000000
+push ebx
+jmp 0x100FE0

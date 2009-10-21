@@ -58,7 +58,7 @@ void loader()
 	
 	paging_activate(pml4);
 
-	asm(
-		"push $0x18 \n"
-	   );
+	//asm(
+	//	"push $0x18 \n"
+	//   );
 }

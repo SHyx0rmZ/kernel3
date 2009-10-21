@@ -27,7 +27,7 @@ AS = nasm
 M32 = -m32
 M64 = -m64
 
-CCFLAGS = -c -Wall -Wextra -Werror -fno-stack-protector -fno-builtin -nostdlib -nodefaultlibs -fverbose-asm -funsigned-char
+CCFLAGS = -g -c -Wall -Wextra -Werror -fno-stack-protector -fno-builtin -nostdlib -nodefaultlibs -fverbose-asm -funsigned-char
 LDFLAGS = -O3 -s
 
 bin/nuke.nke: bin/loader bin/kernel src/nuke.asm src/loader/loader.ld src/kernel/kernel.ld

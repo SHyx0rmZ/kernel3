@@ -16,17 +16,43 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _PAGING_H_
+#define _PAGING_H_
+
 #include "types.h"
-#include "print.h"
+/*
+ * Variables
+ */
 
-void kernel(int magic, int multiboot)
-{
-	if(multiboot)
-		multiboot = 0;
-	if(magic)
-		magic = 0;
+#define PAGING_P 		0x01
+#define PAGING_W 		0x02
+#define PAGING_U 		0x04
+#define PAGING_PWT 		0x08
+#define PAGING_PCD 		0x10
+#define PAGING_A 		0x20
+#define PAGING_NX 		0x8000000000000000LL
 
-	print("Booted into Long Mode, horray!", COLOR_GREEN);
+#define PDE_D 			0x0040
+#define PDE_1 			0x0080
+#define PDE_G 			0x0100
+#define PDE_PAT 		0x1000
 
-	while(1) { asm("hlt"); };
-}
+#define PML4E_BASE_ADDRESS 	0x000FFFFFFFFFF000LL
+#define PDPE_BASE_ADDRESS 	0x000FFFFFFFFFF000LL
+#define PDE_BASE_ADDRESS	0x000FFFFFFFE00000LL
+
+/*
+ * Structs
+ */
+
+typedef qword pml4e_t;
+typedef qword pdpe_t;
+typedef qword pde_t;
+
+/*
+ * Functions
+ */
+
+bool paging_map(qword address_physical, qword address_virtual, byte pages);
+
+#endif

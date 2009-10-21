@@ -57,7 +57,7 @@ void paging_activate(qword *pml4)
 		"mov %%eax, %%cr4 \n"
 
 		"mov %0, %%eax \n"
-		"mov %%cr3, %%eax \n"
+		"mov %%eax, %%cr3 \n"
 
 		"mov $0xC0000080, %%ecx \n"
 		"rdmsr \n"
