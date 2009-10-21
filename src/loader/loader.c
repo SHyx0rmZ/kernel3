@@ -21,6 +21,7 @@
 #include "cpuid.h"
 #include "print.h"
 #include "reboot.h"
+#include "paging.h"
 
 void loader()
 {
@@ -53,13 +54,9 @@ void loader()
 		reboot();
 	}
 
-	//enable_pae_and_pge();
-	//setup_paging();
-	//enable_long_mode();
-	//jmp();
+	qword *pml4 = paging_initialize();
 	
-	//TODO: Remove this
-	while(TRUE) { asm("hlt"); }
+	paging_activate(pml4);
 
 	asm(
 		"push $0x18 \n"
