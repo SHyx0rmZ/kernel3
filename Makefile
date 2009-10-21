@@ -85,5 +85,7 @@ image: bin/nuke.nke
 	#@sudo echo -e "device (fd0) bin/nuke.img\nroot (fd0)\nsetup (fd0)\nquit" | grub --batch --no-floppy > /dev/null 2> /dev/null
 	@echo " [FD] Image created"
 
+cleans:
+	@find -iregex ".*\(~\|swp\)$\" -exec rm -v \{\} \;
 
-.PHONY: clean image
+.PHONY: clean image cleans

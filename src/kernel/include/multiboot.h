@@ -16,25 +16,36 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MULTIBOOT_H_
+#define _MULTIBOOT_H_
+
 #include "types.h"
-#include "print.h"
-#include "multiboot.h"
-#include "reboot.h"
 
-void kernel(int magic, multiboot_info_t *multiboot)
-{
-	if(magic != 0x2BADB002)
-	{
-		print("Multiboot isn't magic", COLOR_RED);
-		reboot();
-	}
+typedef struct {
+	dword flags;
+	dword mem_lower;
+	dword mem_upper;
+	dword boot_device;
+	dword cmdline;
+	dword mods_count;
+	dword mods_addr;
+	dword tabsize_or_num;
+	dword strsize_or_size;
+	dword addr_or_addr;
+	dword reserver_or_shndx;
+	dword mmap_length;
+	dword mmap_addr;
+	dword drives_length;
+	dword drives_addr;
+	dword config_table;
+	dword boot_loader_name;
+	dword apm_table;
+	dword vbe_control_info;
+	dword vbe_mode_info;
+	dword vbe_mode;
+	dword vbe_interface_seg;
+	dword vbe_interface_off;
+	dword vbe_interface_len;
+} multiboot_info_t;
 
-	magic = multiboot->flags;
-
-
-
-	print("Booted into Long Mode, horray!\n", COLOR_GREEN);
-	print("Does this really work?", COLOR_GRAY);
-
-	while(1) { asm("hlt"); };
-}
+#endif

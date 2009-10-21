@@ -16,25 +16,36 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "types.h"
-#include "print.h"
-#include "multiboot.h"
 #include "reboot.h"
+#include "print.h"
 
-void kernel(int magic, multiboot_info_t *multiboot)
+void reboot()
 {
-	if(magic != 0x2BADB002)
-	{
-		print("Multiboot isn't magic", COLOR_RED);
-		reboot();
-	}
+	print("!\r\nPress any key to reboot...", COLOR_GRAY);
 
-	magic = multiboot->flags;
+	asm(
+		// Auf Tastendruck warten
+		"wait0: \n"
+		"inb $0x64, %al \n"
+		"test $0x01, %al \n"
+		"jz wait0 \n"
+		"inb $0x60, %al \n"		
+		// Warten bis Eingabepuffer leer ist
+		"wait1: \n"
+		"inb $0x64, %al \n"
+		"test $0x02, %al \n"
+		"jne wait1 \n"
+ 		// Befehl 0xD1 zum schreiben des Inputports an den KBC senden
+		"mov $0xD1, %al \n"
+		"outb  %al, $0x64 \n"
+ 		// Wieder warten bis der Eingabepuffer leer ist
+		"wait2: \n"
+		"inb $0x64, %al \n"
+		"test $0x02, %al \n"
+		"jne  wait2 \n"
+		// Den neuen Wert für den Inputport über Port 0x60 senden
+		"mov $0xFE, %al \n"
+		"outb %al, $0x60 \n"
+	);
 
-
-
-	print("Booted into Long Mode, horray!\n", COLOR_GREEN);
-	print("Does this really work?", COLOR_GRAY);
-
-	while(1) { asm("hlt"); };
 }

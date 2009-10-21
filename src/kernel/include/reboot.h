@@ -16,25 +16,13 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "types.h"
-#include "print.h"
-#include "multiboot.h"
-#include "reboot.h"
+#ifndef _REBOOT_H_
+#define _REBOOT_H_
 
-void kernel(int magic, multiboot_info_t *multiboot)
-{
-	if(magic != 0x2BADB002)
-	{
-		print("Multiboot isn't magic", COLOR_RED);
-		reboot();
-	}
+/*
+ * Functions
+ */
 
-	magic = multiboot->flags;
+void reboot();
 
-
-
-	print("Booted into Long Mode, horray!\n", COLOR_GREEN);
-	print("Does this really work?", COLOR_GRAY);
-
-	while(1) { asm("hlt"); };
-}
+#endif

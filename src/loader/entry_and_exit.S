@@ -35,10 +35,6 @@ NUKE_LOADER_END_STACK:
 
 section .module_exit
 NUKE_LOADER_EXIT:
-pop ebx
-pop eax
-push 0x00000000
-push eax
-push 0x00000000
-push ebx
+pop edi
+pop esi
 jmp 0x100FE0
