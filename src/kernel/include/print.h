@@ -38,6 +38,7 @@
  */
 
 void clear_screen();
+void print_set(byte position);
 void print(const char *text, byte flags);
 
 #endif

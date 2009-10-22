@@ -33,6 +33,15 @@ void clear_screen()
 	videomemory = (byte *)0xB8000;
 }
 
+void print_set(byte position)
+{
+	position--;
+
+	position *= 2;
+
+	videomemory = (byte *)((videomemory - ((qword)(videomemory - 0xB8000) % 0xA0)) + position);
+}
+
 void print(const char *text, byte flags)
 {
 	byte *c;
