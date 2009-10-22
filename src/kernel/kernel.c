@@ -59,7 +59,8 @@ void kernel(long magic, multiboot_info_t *multiboot_info_pointer)
 	}
 
 	print("ASXSoft ", COLOR_GRAY);
-	print("Nuke\r\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", COLOR_BLUE);
+	print("Nuke\r\n", COLOR_BLUE);
+	print("================================================================================", COLOR_GRAY);
 
 	if(inb(0x03CC) == 0)	
 	{
@@ -78,11 +79,7 @@ void kernel(long magic, multiboot_info_t *multiboot_info_pointer)
 
 	print("Setting up GDT...", COLOR_GRAY);
 
-	gdt_set_entry(0, 0, 0, 0, 0);
-	gdt_set_entry(1, 0, GDT_LIMIT, GDT_PRESENT | GDT_RING_0 | GDT_SEGMENT | GDT_EXECUTABLE | GDT_READABLE, GDT_GRANULAR | GDT_LONG_MODE);
-	gdt_set_entry(2, 0, GDT_LIMIT, GDT_PRESENT | GDT_RING_0 | GDT_SEGMENT | GDT_WRITABLE | GDT_DIRECTION_UP, GDT_GRANULAR | GDT_PROTECTED_MODE);
-	gdt_set_entry(3, 0, GDT_LIMIT, GDT_PRESENT | GDT_RING_3 | GDT_SEGMENT | GDT_EXECUTABLE | GDT_READABLE, GDT_GRANULAR | GDT_LONG_MODE);
-	gdt_set_entry(4, 0, GDT_LIMIT, GDT_PRESENT | GDT_RING_3 | GDT_SEGMENT | GDT_WRITABLE | GDT_DIRECTION_UP, GDT_GRANULAR | GDT_PROTECTED_MODE);
+	gdt_initialize();
 	
 	gdt_load();
 
@@ -95,6 +92,8 @@ void kernel(long magic, multiboot_info_t *multiboot_info_pointer)
 	print("...", COLOR_GRAY);
 
 	ewrin();
+
+	
 
 	while(1) { asm("hlt"); };
 }

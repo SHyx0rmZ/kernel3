@@ -81,7 +81,7 @@ gdt_pointer_t;
 
 void gdt_flush_registers(word cs, word ds, word es, word fs, word gs, word ss);
 void gdt_load();
-void gdt_load_limited(word entries);
 void gdt_set_entry(word index, dword base, dword limit, byte access, byte flags);
+void gdt_initialize();
 
 #endif
