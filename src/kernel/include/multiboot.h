@@ -16,12 +16,12 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MULTIBOOT_H_
+#ifndef _MULTIBOOT_H_ 
 #define _MULTIBOOT_H_
 
 #include "types.h"
 
-typedef struct {
+typedef struct multiboot_info_t {
 	dword flags;
 	dword mem_lower;
 	dword mem_upper;

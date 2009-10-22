@@ -21,9 +21,28 @@
 #include "multiboot.h"
 #include "reboot.h"
 #include "gdt.h"
+#include "util.h"
 //#include "idt.h"
 
-void kernel(long magic, multiboot_info_t *multiboot)
+struct multiboot_info_t multiboot_info;
+
+void ewrin()
+{
+	print_set(66);
+	print("[", COLOR_GRAY);
+	print("EPIC WRIN", COLOR_GREEN);
+	print("]\r\n", COLOR_GRAY);
+}
+
+void efail()
+{
+	print_set(66);
+	print("[", COLOR_GRAY);
+	print("EPIC FAIL", COLOR_RED);
+	print("]\r\n", COLOR_GRAY);
+}
+
+void kernel(long magic, multiboot_info_t *multiboot_info_pointer)
 {
 	if(magic != 0x2BADB002)
 	{
@@ -31,30 +50,33 @@ void kernel(long magic, multiboot_info_t *multiboot)
 		reboot();
 	}
 
-	if((multiboot->flags & 0x40) == 0)
+	memcpy(&multiboot_info, multiboot_info_pointer, sizeof(struct multiboot_info_t));
+
+	if((multiboot_info.flags & 0x40) == 0)
 	{
 		print("Can't get memory map", COLOR_RED);
 		reboot();
 	}
 
-	dword i = 0;
+	print("ASXSoft ", COLOR_GRAY);
+	print("Nuke\r\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", COLOR_BLUE);
 
-	for(i = 1; i < 0x80000000; i = i << 1)
+	if(inb(0x03CC) == 0)	
 	{
-		if((multiboot->flags & i) != 0)
-			print("Set ", COLOR_GREEN);
-		else
-			print("Cleared ", COLOR_RED);
+		byte old = inb(0x03B4);
+		outb(0x03B4, 0x0A);
+		outb(0x03B5, 0x3F);
+		outb(0x03B4, old);
+	}
+	else
+	{
+		byte old = inb(0x03D4);
+		outb(0x03D4, 0x0A);
+		outb(0x03D5, 0x3F);
+		outb(0x03D4, old);
 	}
 
-	print("ASXSoft ", COLOR_GRAY);
-	print("Nuke\r\n", COLOR_BLUE);
-
-	print("Successfully ", COLOR_GREEN);
-	print("switched to ", COLOR_GRAY);
-	print("Long Mode\r\n", COLOR_YELLOW);
-
-	print("Setting up GDT...                                            ", COLOR_GRAY);
+	print("Setting up GDT...", COLOR_GRAY);
 
 	gdt_set_entry(0, 0, 0, 0, 0);
 	gdt_set_entry(1, 0, GDT_LIMIT, GDT_PRESENT | GDT_RING_0 | GDT_SEGMENT | GDT_EXECUTABLE | GDT_READABLE, GDT_GRANULAR | GDT_LONG_MODE);
@@ -66,7 +88,13 @@ void kernel(long magic, multiboot_info_t *multiboot)
 
 	gdt_flush_registers(0x08, 0x10, 0x10, 0x00, 0x00, 0x10);
 
-	print("OK", COLOR_GREEN);
+	ewrin();
+
+	print("Switching to ", COLOR_GRAY);
+	print("Long Mode", COLOR_YELLOW);
+	print("...", COLOR_GRAY);
+
+	ewrin();
 
 	while(1) { asm("hlt"); };
 }
