@@ -42,7 +42,6 @@ NUKE_ENTRY:
 incbin "bin/loader"
 
 times 0x0FE0-($-$$) db 0x90
-push 0x18
 jmp NUKE_KERNEL_ENTRY
 times 0x1000-($-$$) db 0x90
 NUKE_KERNEL_ENTRY:
