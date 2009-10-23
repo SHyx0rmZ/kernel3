@@ -14,8 +14,8 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-SRCS_LOADER = $(shell find src/loader -name '*.c') src/loader/entry_and_exit.S
-SRCS_KERNEL = $(shell find src/kernel -name '*.c') src/loader/entry_and_exit.S
+SRCS_LOADER = $(shell find src/loader -iregex ".*\.[cS]")
+SRCS_KERNEL = $(shell find src/kernel -iregex ".*\.[cS]")
 
 OBJS_LOADER = $(addprefix obj/loader/,$(notdir $(addsuffix .o,$(basename $(SRCS_LOADER)))))
 OBJS_KERNEL = $(addprefix obj/kernel/,$(notdir $(addsuffix .o,$(basename $(SRCS_KERNEL)))))

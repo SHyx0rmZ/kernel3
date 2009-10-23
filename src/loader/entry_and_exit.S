@@ -29,7 +29,7 @@ jmp NUKE_LOADER_EXIT
 
 NUKE_LOADER_START_STACK:
 
-times 256 db 00
+times 8192 db 00
 
 NUKE_LOADER_END_STACK:
 
@@ -103,4 +103,4 @@ push 0
 push 0
 push 0
 mov esp, NUKE_LOADER_END_STACK
-jmp 0x100FE0
+jmp 0x102FE0

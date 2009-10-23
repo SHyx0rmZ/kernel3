@@ -41,9 +41,9 @@ NUKE_ENTRY:
 [bits 32]
 incbin "bin/loader"
 
-times 0x0FE0-($-$$) db 0x90
+times 0x2FE0-($-$$) db 0x90
 jmp NUKE_KERNEL_ENTRY
-times 0x1000-($-$$) db 0x90
+times 0x3000-($-$$) db 0x90
 NUKE_KERNEL_ENTRY:
 
 incbin "bin/kernel"

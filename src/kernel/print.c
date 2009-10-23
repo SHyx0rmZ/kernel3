@@ -63,14 +63,14 @@ void print(const char *text, byte flags)
 			videomemory = (byte *)(videomemory - ((qword)(videomemory - 0xB8000) % 0xA0));
 		}
 
-		while(videomemory > (byte *)0xB8FA0)
+		while((qword)videomemory > 0xB8FA0)
 		{
 			byte *videosrc = (byte *)0xB80A0;
 			byte *videodest = (byte *)0xB8000;
 
 			while(videosrc < (byte *)0xB8FA0)
 			{
-				*videodest++ = *videosrc++;
+				*(videodest++) = *(videosrc++);
 			}
 
 			videomemory -= 0xA0;

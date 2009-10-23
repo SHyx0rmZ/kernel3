@@ -22,7 +22,7 @@
 #include "reboot.h"
 #include "gdt.h"
 #include "util.h"
-//#include "idt.h"
+#include "idt.h"
 
 struct multiboot_info_t multiboot_info;
 
@@ -62,6 +62,12 @@ void kernel(long magic, multiboot_info_t *multiboot_info_pointer)
 	print("Nuke\r\n", COLOR_BLUE);
 	print("================================================================================", COLOR_GRAY);
 
+	print("Switching to ", COLOR_GRAY);
+	print("Long Mode", COLOR_YELLOW);
+	print("...", COLOR_GRAY);
+
+	ewrin();
+
 	if(inb(0x03CC) == 0)	
 	{
 		byte old = inb(0x03B4);
@@ -87,12 +93,13 @@ void kernel(long magic, multiboot_info_t *multiboot_info_pointer)
 
 	ewrin();
 
-	print("Switching to ", COLOR_GRAY);
-	print("Long Mode", COLOR_YELLOW);
-	print("...", COLOR_GRAY);
+	print("Setting up IDT...", COLOR_GRAY);
+
+	idt_initialize();
+
+	idt_load();
 
 	ewrin();
-
 	
 
 	while(1) { asm("hlt"); };

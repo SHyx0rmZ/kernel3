@@ -16,25 +16,47 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-OUTPUT_FORMAT(binary)
-OUTPUT_ARCH(i386:x86-64)
+#include "types.h"
+#include "int.h"
+#include "util.h"
+#include "print.h"
 
-SECTIONS
+void handle_interrupt(cpu_state_t *cpu_state)
 {
-	. = 0x103000;
+	if(cpu_state->interrupt <= 0x19)
+	{
+	}
+	else if(cpu_state->interrupt >= IRQ_BASE && cpu_state->interrupt <= (IRQ_BASE + 15))
+	{
+		if(cpu_state->interrupt >= (IRQ_BASE +  8))
+		{
+			outb(PIC2, PIC_EOI);
+		}
 
-	.text : {
-		*(.module_entry)
-		*(.text)
-		*(.module_exit)
+		outb(PIC1, PIC_EOI);
 	}
-	.data : {
-		*(.data)
+	else
+	{
+		print("Invalid interrupt!", COLOR_RED);
 	}
-	.rodata : {
-		*(.rodata)
-	}
-	.bss : {
-		*(.bss)
-	}
+}
+
+void irq_initialize()
+{
+	outb(PIC1_COMMAND, ICW1_INIT + ICW1_ICW4);
+	outb(PIC2_COMMAND, ICW1_INIT + ICW1_ICW4);
+
+	outb(PIC1_DATA, IRQ_BASE);
+	outb(PIC2_DATA, IRQ_BASE + 8);
+	
+	outb(PIC1_DATA, 4);
+	outb(PIC2_DATA, 2);
+
+	outb(PIC1_DATA, ICW4_8086);
+	outb(PIC2_DATA, ICW4_8086);
+
+	outb(PIC1_DATA, 0x00);
+	outb(PIC2_DATA, 0x00);
+
+	asm("sti");
 }
